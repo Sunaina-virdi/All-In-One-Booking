@@ -21,6 +21,8 @@ app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads',express.static(__dirname+'/uploads'));
 
+
+
 app.use(cors({
     credentials:true,
     origin:'http://localhost:5173',
@@ -67,6 +69,30 @@ app.post('/register', async (req, res) => {
 });
 
 
+
+// Search API
+// app.get('/search', async (req, res) => {
+//   const { query } = req.query;
+
+//   try {
+//     // Use a regular expression to perform a case-insensitive search
+//     const places = await Place.find({
+//       $or: [
+//         { title: { $regex: query, $options: 'i' } }, // Search in title
+//         { address: { $regex: query, $options: 'i' } }, // Search in address
+//         { facility: { $regex: query, $options: 'i' } } // Search in facilities array
+//       ]
+//     });
+
+//     res.json(places);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Error fetching search results.' });
+//   }
+// });
+
+
+
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
   const userDoc = await User.findOne({ email });
@@ -84,6 +110,8 @@ app.post('/login', async (req, res) => {
       res.status(404).json('User not found');
   }
 });
+
+// show profile 
 app.get('/profile', (req, res) => {
   const { token } = req.cookies;
   if (token) {
@@ -99,7 +127,7 @@ app.get('/profile', (req, res) => {
       }
 
       // If user is found, send back user data
-      const { name, email,role, _id } = user;
+      const { name, email,role, _id} = user;
       res.json({ name, email,role, _id });
     });
   } else {
@@ -107,22 +135,70 @@ app.get('/profile', (req, res) => {
   }
 });
 
-app.post('/logout',(req,res) => {
-  res.cookie('token','').json(true);
+// edit profile
+app.put('/profile', async (req, res) => {
+  const { token } = req.cookies;
+  const { name, email} = req.body;
+
+  if (!token) {
+    return res.status(401).json('No token provided');
+  }
+
+  jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+    if (err) {
+      return res.status(401).json('Invalid or expired token');
+    }
+
+    try {
+      const updatedUser = await User.findByIdAndUpdate(
+        userData._id,
+        { name, email },
+        { new: true }
+      );
+
+      res.json({
+        name: updatedUser.name,
+        email: updatedUser.email,
+        role: updatedUser.role,
+      });
+    } catch (error) {
+      res.status(500).json('Error updating profile');
+    }
+  });
 });
 
-// app.get('/profile',(req,res) => {
-//   const {token} = req.cookies;
-//   if(token){
-//     jwt.verify(token, jwtSecret, {},async (err, userData) => {
-//       if(err) throw err;
-//       const {name,email,_id} = await User.findById(userData.id);
-//       res.json({name,email,_id});
-//     });
-//   }else{
-//     res.json(null);
+
+app.post('/logout', (req,res) => {
+  res.cookie('token', '').json(true);
+});
+
+
+// const upload = multer({dest:'uploads/'});
+// app.post('/upload-photo', upload.single("photo"), async (req, res) => {
+//   const { token } = req.cookies; // Use the token to get the user ID
+//   if (!token) {
+//     return res.status(401).json({ error: "No token provided" });
+//   }
+
+//   const userData = jwt.verify(token, jwtSecret);
+//   const userId = userData._id;
+
+//   if (!req.file) {
+//     return res.status(400).json({ error: "No file uploaded" });
+//   }
+
+//   const photoUrl = `/uploads/${req.file.filename}`;
+  
+//   // Update the user's photo in the database
+//   try {
+//     await User.findByIdAndUpdate(userId, { photo: photoUrl });
+//     res.json({ photoUrl });
+//   } catch (err) {
+//     res.status(500).json({ error: "Error updating photo" });
 //   }
 // });
+
+
 
 // console.log({__dirname});
 app.post('/upload-by-link',async(req,res) => {
@@ -148,17 +224,6 @@ app.post('/upload',photosMiddleware.array('photos',100),(req,res) => {
   }
   res.json(uploadedFiles);
 });
-// const upload = multer({ dest: "uploads/" });
-
-// app.post("/upload", upload.array("photos", 10), (req, res) => {
-//   const uploadedFiles = [];
-//   req.files.forEach((file) => {
-//     const newPath = file.path + "." + file.mimetype.split("/")[1];
-//     fs.renameSync(file.path, newPath); // Rename the file to include its extension
-//     uploadedFiles.push(newPath.split("/")[1]); // Save only the filename
-//   });
-//   res.json(uploadedFiles); // Respond with an array of filenames
-// });
 
 // posting new places
 app.post('/places',(req,res) => {
@@ -217,27 +282,14 @@ app.get('/places',async(req,res) => {
 });
 
 // booking create
-// app.post('/bookings', async (req, res) => {
-//   // const userData = await getUserDataFromReq(req);
-//   const {
-//     place,checkIn,checkOut,numberOfGuests,name,phone,price,
-//   } = req.body;
-//   Booking.create({
-//     place,checkIn,checkOut,numberOfGuests,name,phone,price,
-//     // user:userData.id,
-//   }).then((doc) => {
-//     res.json(doc);
-//   }).catch((err) => {
-//     throw err;
-//   });
-// });
-
-app.post('/bookings', async (req, res) => {
+app.post('/account/bookings', async (req, res) => {
   const { checkIn, checkOut, numberofGuests, name, phone, place, price } = req.body;
+  const mytoken=req.cookies.token
+  console.log("token",mytoken)
 
   // Assume `req.user` contains the user ID (typically from authentication middleware)
-  const user = req.user;
-
+  const user = await jwt.verify(mytoken,jwtSecret)
+  
   if (!user) {
     return res.status(401).json({ error: 'User not authenticated' });
   }
@@ -245,7 +297,7 @@ app.post('/bookings', async (req, res) => {
   try {
     const booking = await Booking.create({
       place,
-      // user:user._id,
+      user:user._id,
       checkIn,
       checkOut,
       numberOfGuests: numberofGuests,
@@ -253,7 +305,7 @@ app.post('/bookings', async (req, res) => {
       phone,
       price,
     });
-
+    // console.log(booking);
     res.status(201).json(booking);
   } catch (err) {
     res.status(400).json(err);
@@ -261,10 +313,14 @@ app.post('/bookings', async (req, res) => {
 });
 
 
-// app.get('/bookings', async (req,res) => {
-//   const userData = await getUserDataFromReq(req);
-//   res.json( await Booking.find({user:userData.id}).populate('place') );
-// });
+app.get('/bookings', async (req, res) => {
+  const userData = await getUserDataFromReq(req);
+  console.log("hello",userData)
+  const bookings = await Booking.find({ user: userData._id }).populate('place');
+  console.log(bookings); // Log the data being sent
+  res.json(bookings);
+});
+
 
 app.listen(4000 ,() => {
     console.log("http://localhost:4000");

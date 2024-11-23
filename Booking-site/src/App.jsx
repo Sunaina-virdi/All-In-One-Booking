@@ -4,9 +4,11 @@ import Homepage from "./components/homepage.jsx";
 import Loginpage from './components/loginpage.jsx';
 import Registerpage from './components/registerpage.jsx';
 import Layout from './Layout';
+// import SearchBar from './Searchbar';
 import { UserContextProvider } from './UserContext.jsx';
 import axios from "axios";
 import ProfilePage from './components/ProfilePage.jsx';
+import EditProfilePage from "./components/EditProfilePage";
 import PlacesPage from './components/PlacesPage.jsx';
 import PlacesFormPage from './components/PlacesFormPage.jsx';
 import HomePlacePage from './components/HomePlacePage.jsx';
@@ -23,10 +25,12 @@ function App() {
     <UserContextProvider>
       <Routes>
         <Route path="/" element={<Layout />}>
+            {/* <Route path="/search" element={<SearchBar />} /> */}
             <Route index element={<Homepage/>}/>
             <Route path="/login" element = {<Loginpage/>}/>
             <Route path="/register" element = {<Registerpage/>}/>
             <Route path="/account/" element={<ProfilePage/>}/>
+            <Route path="/account/profile/edit" element={<EditProfilePage />} />
             <Route path="/account/places" element={<PlacesPage/>}/>
             <Route path="/account/places/new" element={<PlacesFormPage/>}/>
             <Route path="/account/places/:id" element={<PlacesFormPage/>}/>

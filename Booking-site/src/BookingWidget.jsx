@@ -1,8 +1,9 @@
 import { useContext, useEffect, useState } from "react";
+
 import {differenceInCalendarDays} from "date-fns";
 import axios from "axios";
 import {Navigate} from "react-router-dom";
-import { UserContext } from "./UserContext";
+import { UserContext } from "./UserContext.jsx";
 
 export default function BookingWidget({place}){
     const [checkIn,setCheckIn] = useState('');
@@ -12,6 +13,13 @@ export default function BookingWidget({place}){
     const [phone,setPhone] = useState('');
     const [redirect,setRedirect] = useState('');
     const {user} = useContext(UserContext);
+
+    
+    const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
+    
+    useEffect(() => {
+        setCheckIn(today); // Set the default check-in date to today
+    }, [today]);
 
     useEffect(() => {
       if(user){
@@ -25,29 +33,15 @@ export default function BookingWidget({place}){
     }
 
     async function bookThisPlace() {
-        const response = await axios.post('/bookings', {
+        const response = await axios.post('http://localhost:4000/account/bookings', {
           checkIn,checkOut,numberofGuests,name,phone,
           place:place._id,
           price:numberOfNights * place.price,
         });
         const bookingId = response.data._id;
         setRedirect(`/account/bookings/${bookingId}`);
+       
     }
-    // async function bookThisPlace() {
-    //     try {
-    //         const response = await axios.post('/bookings', {
-    //           checkIn, checkOut, numberofGuests, name, phone,
-    //           place: place._id,
-    //           price: numberOfNights * place.price,
-    //         });
-    
-    //         const bookingId = response.data._id;
-    //         setRedirect(`/account/bookings/${bookingId}`);
-    //     } catch (err) {
-    //         console.error('Error creating booking:', err);
-    //     }
-    // }
-    
 
     if(redirect){
         return <Navigate to={redirect} />
@@ -58,25 +52,35 @@ export default function BookingWidget({place}){
             <h2 className="text-xl text-center mb-2">Price:${place.price} /per night</h2>
             <div className="border rounded-2xl mt-4">
                 <div className="flex">
-                    <div className="py-3 px-4 ">
-                        <label>Check in : </label><br/>
-                        <input type="date" value={checkIn} 
-                            onChange={ev => setCheckIn(ev.target.value)}/>
+                    <div className="py-3 px-4">
+                    <label>Check in : </label><br />
+                    <input
+                        type="date"
+                        value={checkIn}
+                        min={today} // Set the minimum date to today
+                        onChange={ev => setCheckIn(ev.target.value)}
+                    />
                     </div>
                     <div className="py-3 px-4 border-l">
-                        <label>Check out : </label><br/>
-                        <input type="date" value={checkOut} 
-                            onChange={ev => setCheckOut(ev.target.value)}/>
+                    <label>Check out : </label><br />
+                    <input
+                        type="date"
+                        value={checkOut}
+                        min={checkIn} // Ensure the check-out date is not before the check-in date
+                        onChange={ev => setCheckOut(ev.target.value)}
+                    />
                     </div>
                 </div>
                 <div className="py-3 px-4 border-t">
-                    <label>Number of guests : </label><br/>
-                    <input type="number" className="border rounded-lg p-2 w-full"
-                        value={numberofGuests} 
-                        onChange={ev => setNumberOfGuests(ev.target.value)}/>
+                    <label>Number of guests : </label><br />
+                    <input
+                    type="number"
+                    className="border rounded-lg p-2 w-full"
+                    value={numberofGuests}
+                    onChange={ev => setNumberOfGuests(ev.target.value)}
+                    />
                 </div>
             </div>
-
             {numberOfNights > 0 && (
             <div className="py-3 px-4 border-t">
                 <label>Your full name:</label>
@@ -92,7 +96,7 @@ export default function BookingWidget({place}){
             </div>
             )}
 
-            <button className="primary" onClick={bookThisPlace}  type="button">
+            <button className="primary" onClick={bookThisPlace} >
                 Book this place
                 {numberOfNights > 0 && (
                     <span> ${numberOfNights * place.price}</span>

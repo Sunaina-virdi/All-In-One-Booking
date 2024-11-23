@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import BookingWidget from "../BookingWidget";
+import PlaceGallery from "../PlaceGallery";
 
 export default function HomePlacePage(){
     const {id} = useParams();
     const [place,setPlace] = useState(null);
-    const [showAllPhotos,setShowAllPhotos] = useState(false);
+    
 
     useEffect(() => {
         if(!id){
@@ -19,30 +20,7 @@ export default function HomePlacePage(){
 
     if(!place) return '';
 
-    if(showAllPhotos){
-        return (
-            <div className="absolute inset-0 bg-black  text-white h-screen overflow-auto">
-                <div className="p-8 grid gap-4 ">
-                <div>
-                    <h2 className="text-3xl mr-32">Photos of {place.title}</h2>
-                    <button onClick={() => setShowAllPhotos(false)} className="fixed right-12 top-8 flex gap-2 py-2 px-4 rounded-2xl shadow-md shadow-white text-black">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                            <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
-                        </svg>
-                        Close photos
-                    </button>
-                </div>
-                <div className="flex flex-col justify-center items-center gap-4">
-                {place?.photos?.length > 0 && place.photos.map(photo => (
-                    <div>
-                        <img className="w-[30rem] rounded-lg" src={'http://localhost:4000/uploads/' + photo} alt=""/>
-                    </div>   
-                ))}
-                </div>
-                </div>
-            </div>
-        );
-    }
+    
 
     return (
         <div className=" mt-8 bg-gray-100 px-10 -mx-8 pt-8">
@@ -56,7 +34,7 @@ export default function HomePlacePage(){
                     </svg>
                     <h2>{place.address}</h2>
                 </a>
-                <div className="relative flex justify-center items-center">
+                {/* <div className="relative flex justify-center items-center">
                     <div className="flex flex-row gap-3">
                         <div>
                             {place.photos?.[0] && (
@@ -80,7 +58,8 @@ export default function HomePlacePage(){
                     </svg>
                         Show more photos
                     </button>
-                </div>
+                </div> */}
+                <PlaceGallery place={place}/>
                 
                 <div className="mt-10 mb-8 grid gap-8 grid-cols-1 md:grid-cols-[2fr_1fr]">
                     <div>
