@@ -17,6 +17,8 @@ const app = express();
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = 'asdfghjkl';
 
+
+// middleware setup
 app.use(express.json()); 
 app.use(cookieParser());
 app.use('/uploads',express.static(__dirname+'/uploads'));
@@ -31,6 +33,7 @@ app.use(cors({
 // Update the URI to point to your local MongoDB instance
 const uri = 'mongodb://localhost:27017/mydatabase';
 
+// database connection
 mongoose.connect(uri, {
    useNewUrlParser: true,
    useUnifiedTopology: true,
@@ -54,7 +57,7 @@ app.get('/test',(req,res) => {
 });
 
 app.post('/register', async (req, res) => {
-  const { name, email, password, role } = req.body; // Accept role
+  const { name, email, password, role } = req.body; 
   try {
     const userDoc = await User.create({
       name,
@@ -111,21 +114,20 @@ app.post('/login', async (req, res) => {
   }
 });
 
-// show profile 
+// fetch profile 
 app.get('/profile', (req, res) => {
   const { token } = req.cookies;
   if (token) {
+    // token verify
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
       if (err) {
         return res.status(401).json('Invalid or expired token');
       }
-
       // Attempt to find the user by ID
-      const user = await User.findById(userData._id);  // Use userData._id, not userData.id
+      const user = await User.findById(userData._id);  
       if (!user) {
         return res.status(404).json('User not found');
       }
-
       // If user is found, send back user data
       const { name, email,role, _id} = user;
       res.json({ name, email,role, _id });
@@ -225,28 +227,30 @@ app.post('/upload',photosMiddleware.array('photos',100),(req,res) => {
   res.json(uploadedFiles);
 });
 
+
 // posting new places
-app.post('/places',(req,res) => {
+app.post('/places', (req,res) => {
   const {token} = req.cookies;
-  const {title,address,addedPhotos,description,
-    facility,extraInfo,checkIn,checkOut,maxGuests,price,
+  const {
+    title,address,addedPhotos,description,price,
+    facility,extraInfo,checkIn,checkOut,maxGuests,
   } = req.body;
-  jwt.verify(token, jwtSecret, {},async (err, userData) => {
-    if(err) throw err;
+  jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+    if (err) throw err;
     const placeDoc = await Place.create({
-      owner:userData.id,
+      owner:userData._id,price,
       title,address,photos:addedPhotos,description,
       facility,extraInfo,checkIn,checkOut,maxGuests,
-    })
+    });
+    res.json(placeDoc);
   });
-  res.json(placeDoc);
 });
 
 app.get('/user-places',(req,res) => {
   const {token} = req.cookies;
   jwt.verify(token, jwtSecret, {},async (err, userData) => {
-    const {id} = userData;
-    res.json(await Place.find({owner:id})); 
+    const userId = userData._id;  // Correct field is _id
+    res.json(await Place.find({ owner: userId }));
   })
 });
 
@@ -256,23 +260,38 @@ app.get('/places/:id',async(req,res) => {
 })
 
 // update places
-app.put('/places',async(req,res) => {
-  const {token} = req.cookies;
+app.put('/places', async (req, res) => {
+  const { token } = req.cookies;
   const {
     id, title, address, addedPhotos,
     description, facility, extraInfo,
-    checkIn, checkOut, maxGuests,price,
+    checkIn, checkOut, maxGuests, price,
   } = req.body;
 
-  jwt.verify(token, jwtSecret, {},async (err, userData) => {
+  jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+    if (err) return res.status(401).json({ error: 'Unauthorized' });
+
     const placeDoc = await Place.findById(id);
-    if(userData.id === placeDoc.owner){
+
+    // Compare ObjectIds to verify ownership
+    if (userData._id.toString() === placeDoc.owner.toString()) {
       placeDoc.set({
-        title,address,photos:addedPhotos,description,
-        facility,extraInfo,checkIn,checkOut,maxGuests,price,
+        title,
+        address,
+        photos: addedPhotos,
+        description,
+        facility,
+        extraInfo,
+        checkIn,
+        checkOut,
+        maxGuests,
+        price,
       });
-      placeDoc.save();
+
+      await placeDoc.save();
       res.json('ok');
+    } else {
+      res.status(403).json({ error: 'Forbidden: You are not the owner of this place' });
     }
   });
 });
@@ -280,6 +299,7 @@ app.put('/places',async(req,res) => {
 app.get('/places',async(req,res) => {
   res.json(await Place.find());
 });
+
 
 // booking create
 app.post('/account/bookings', async (req, res) => {
@@ -311,6 +331,8 @@ app.post('/account/bookings', async (req, res) => {
     res.status(400).json(err);
   }
 });
+
+
 
 
 app.get('/bookings', async (req, res) => {

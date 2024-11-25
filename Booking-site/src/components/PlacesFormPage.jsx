@@ -4,8 +4,11 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import AccountNav from "../AccountNav";
 import { Navigate, useParams } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../UserContext";
 
 export default function PlacesFormPage(){
+    const { user } = useContext(UserContext);
     const {id} = useParams();
     const [title,setTitle] = useState('');
     const [address,setAddress] = useState('');
@@ -86,7 +89,7 @@ export default function PlacesFormPage(){
 
     return(
         <div className=" w-full mx-auto mt-8">
-            <AccountNav />
+            <AccountNav role={user?.role}/>
             <form onSubmit={savePlace} className="max-width lg:w-[1090px] md:w-[600px] mx-auto" >
 
                 {preInput('Title','Title for your place. Should be short and catchy as in advertisement')}

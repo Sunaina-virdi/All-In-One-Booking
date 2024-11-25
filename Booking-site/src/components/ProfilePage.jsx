@@ -111,7 +111,7 @@ export default function ProfilePage() {
       )}
 
       {/* Render PlacesPage for non-user roles */}
-      {subpage === "places" && user?.role !== "user" && <PlacesPage />}
+      {subpage === "places" || subpage === "bookings" && user?.role !== "user" && <PlacesPage />}
     </div>
   );
 }

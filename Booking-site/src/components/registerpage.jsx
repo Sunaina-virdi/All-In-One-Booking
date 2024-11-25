@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
+import axios from "axios"; 
 
 export default function RegisterPage() {
   const [name, setName] = useState("");
@@ -10,13 +10,14 @@ export default function RegisterPage() {
   const navigate = useNavigate();
 
   async function registerUser(ev) {
+    // prevents the page from reloading 
     ev.preventDefault();
     try {
       await axios.post("http://localhost:4000/register", {
         name,
         email,
         password,
-        role, // Include role
+        role,
       });
       alert("Registration successful. Now you can log in");
       navigate("/login");

@@ -4,9 +4,11 @@ import AccountNav from "../AccountNav";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import PlaceImg from "../PlaceImg";
+import { useContext } from "react";
+import { UserContext } from "../UserContext";
 
 export default function PlacesPage(){
-    // const { user } = useContext(UserContext);
+    const { user } = useContext(UserContext);
     const [places,setPlaces] = useState([]);
     useEffect(() => {
         axios.get('/user-places').then(({data}) => {
@@ -15,7 +17,7 @@ export default function PlacesPage(){
     },[]);
     return (
         <div> 
-        <AccountNav />
+        <AccountNav role={user?.role}/>
             <div className="text-center">
                 <Link className="inline-flex gap-1 bg-primary text-white mt-4 py-2 px-4 rounded-full" to={'/account/places/new'}>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">

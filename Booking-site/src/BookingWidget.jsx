@@ -40,6 +40,7 @@ export default function BookingWidget({place}){
         });
         const bookingId = response.data._id;
         setRedirect(`/account/bookings/${bookingId}`);
+        
        
     }
 
@@ -49,7 +50,7 @@ export default function BookingWidget({place}){
 
     return(
         <div className="bg-white shadow p-4 rounded-2xl">
-            <h2 className="text-xl text-center mb-2">Price:${place.price} /per night</h2>
+            <h2 className="text-xl text-center mb-2">Price: Rs {place.price} /per night</h2>
             <div className="border rounded-2xl mt-4">
                 <div className="flex">
                     <div className="py-3 px-4">
@@ -99,7 +100,7 @@ export default function BookingWidget({place}){
             <button className="primary" onClick={bookThisPlace} >
                 Book this place
                 {numberOfNights > 0 && (
-                    <span> ${numberOfNights * place.price}</span>
+                    <span> Rs {numberOfNights * place.price}</span>
                 )}
             </button>
         </div>
