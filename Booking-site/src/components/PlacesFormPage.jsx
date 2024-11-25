@@ -19,7 +19,8 @@ export default function PlacesFormPage(){
     const [checkIn,setCheckIn] = useState('');
     const [checkOut,setCheckOut] = useState('');
     const [maxGuests,setmaxGuests] = useState(1);
-    const [price,setPrice] = useState(100)
+    const [price,setPrice] = useState(100);
+    const [category,setCategory] = useState('');
     const [redirect,setRedirect] = useState(false);
     
     useEffect(() => {
@@ -38,6 +39,7 @@ export default function PlacesFormPage(){
             setCheckOut(data.checkOut);
             setmaxGuests(data.maxGuests);
             setPrice(data.price);
+            setCategory(data.category);
         });
     }, [id]);
 
@@ -64,10 +66,16 @@ export default function PlacesFormPage(){
 
     async function savePlace(ev) {
         ev.preventDefault();
+
+        if (!category) {
+            alert('Please select a category for your place.');
+            return;
+        }
+
         const placeData = {
           title, address, addedPhotos,
           description, facility, extraInfo,
-          checkIn, checkOut, maxGuests,price
+          checkIn, checkOut, maxGuests,price,category,
         };
         if (id) {
           // update
@@ -98,6 +106,23 @@ export default function PlacesFormPage(){
                 {preInput('Address','Address to your place')}
                 <input className="outline-none bg-slate-100 w-full p-2 rounded-lg" type="text" value={address} onChange={ev => setAddress(ev.target.value)} placeholder="address"/>
                 
+                {/*  */}
+                {preInput('Category', 'Select the category of your place')}
+                <select
+                className="outline-none bg-slate-100 w-full p-2 rounded-lg"
+                value={category}
+                onChange={(ev) => setCategory(ev.target.value)}>
+                    <option value="" disabled>Select a category</option>
+                    <option value="hotel">Hotel</option>
+                    <option value="castle">Castle</option>
+                    <option value="pool">Pool</option>
+                    <option value="shikara">Shikara</option>
+                    {/* <option value="apartment">Apartment</option> */}
+                    <option value="villa">Villa</option>
+                </select>
+
+{/*  */}
+
                 {preInput('Photos','more for better experience')}
                 <PhotosUploader addedPhotos={addedPhotos} onChange={setAddedPhotos}/>
                 

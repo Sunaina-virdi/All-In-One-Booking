@@ -38,6 +38,7 @@ export default function PlacesPage(){
                         <div className="flex flex-col w-[80%]">
                             <h2 className="text-xl font-bold">{place.title}</h2>
                             <p className="text-sm mt-2">{place.description}</p>
+                            <span className="text-sm text-gray-600">Category: {place.category}</span>
                         </div>
                     </Link>
                 ))}

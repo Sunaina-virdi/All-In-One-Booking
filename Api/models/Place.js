@@ -11,6 +11,14 @@ const PlaceSchema = new mongoose.Schema({
     checkOut: Number,
     maxGuests : Number,
     price: Number,
+    // 
+    category: {
+        type: String,
+        enum: ['hotel', 'castle', 'pool', 'shikara', 'villa'], // Add more categories as needed
+        required: true,
+        // default: 'hotel',
+    },
+    // 
 });
 
 const PlaceModel = mongoose.model('Place',PlaceSchema);

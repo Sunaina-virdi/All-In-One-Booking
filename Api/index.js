@@ -233,14 +233,17 @@ app.post('/places', (req,res) => {
   const {token} = req.cookies;
   const {
     title,address,addedPhotos,description,price,
-    facility,extraInfo,checkIn,checkOut,maxGuests,
+    facility,extraInfo,checkIn,checkOut,maxGuests,category,
   } = req.body;
+
+  console.log('received category:',category);
+
   jwt.verify(token, jwtSecret, {}, async (err, userData) => {
     if (err) throw err;
     const placeDoc = await Place.create({
       owner:userData._id,price,
       title,address,photos:addedPhotos,description,
-      facility,extraInfo,checkIn,checkOut,maxGuests,
+      facility,extraInfo,checkIn,checkOut,maxGuests,category,
     });
     res.json(placeDoc);
   });
@@ -265,7 +268,7 @@ app.put('/places', async (req, res) => {
   const {
     id, title, address, addedPhotos,
     description, facility, extraInfo,
-    checkIn, checkOut, maxGuests, price,
+    checkIn, checkOut, maxGuests, price,category,
   } = req.body;
 
   jwt.verify(token, jwtSecret, {}, async (err, userData) => {
@@ -286,6 +289,7 @@ app.put('/places', async (req, res) => {
         checkOut,
         maxGuests,
         price,
+        category,
       });
 
       await placeDoc.save();
