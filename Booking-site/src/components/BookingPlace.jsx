@@ -23,11 +23,13 @@ export default function BookingPlace(){
     return (
         <div className="my-8">
             {/* single booking page: + {id} */}
-            {/* <div className="text-center max-w-lg mx-auto my-6 rounded-2xl shadow-md shadow-blue-800 p-5 bg-blue-800 text-white">
-                <h1 className="text-3xl mb-2 font-semibold font-mono">Congratulations !! 🥳</h1>
-                <h1 className="text-xl">Your Booking has been confirmed</h1>
-                <h1 className="text-xl">Enjoy your trip </h1>
-            </div> */}
+            <div className="text-center max-w-lg mx-auto my-6 rounded-2xl shadow-md shadow-blue-800 p-5 bg-blue-800 text-white">
+                {/* <h1 className="text-3xl mb-2 font-semibold font-mono">Congratulations !! 🥳</h1> */}
+                <h1 className="text-xl">Your Booking has been confirmed for :<br/>
+                Name: {booking.name} <br/>
+                Phone: {booking.phone}</h1>
+                {/* <h1 className="text-xl">Enjoy your trip </h1> */}
+            </div>
             <div className="max-w-[1140px] mx-auto ">
                 <h1 className="text-3xl">{booking.place.title}</h1>
                 <a className="flex gap-1 my-3 font-semibold underline" target="_blank" 

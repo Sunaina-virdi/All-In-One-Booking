@@ -62,7 +62,7 @@ app.post('/register', async (req, res) => {
     const userDoc = await User.create({
       name,
       email,
-      password: bcrypt.hashSync(password, bcryptSalt),
+      password: bcrypt.hashSync(password, bcryptSalt), // hashed version of a password for secure storage
       role: role || 'user', // Default to 'user' if not provided
     });
     res.json(userDoc);
@@ -102,6 +102,7 @@ app.post('/login', async (req, res) => {
   if (userDoc) {
       const isPasswordCorrect = bcrypt.compareSync(password, userDoc.password);
       if (isPasswordCorrect) {
+        // payload,secret key,expiration time,callback
         jwt.sign({email:userDoc.email,_id:userDoc._id,name:userDoc.name},jwtSecret,{},(err,token) => {
             if(err) throw err;
             res.cookie('token',token).json(userDoc)
@@ -236,7 +237,7 @@ app.post('/places', (req,res) => {
     facility,extraInfo,checkIn,checkOut,maxGuests,category,
   } = req.body;
 
-  console.log('received category:',category);
+  // console.log('received category:',category);
 
   jwt.verify(token, jwtSecret, {}, async (err, userData) => {
     if (err) throw err;
@@ -245,14 +246,14 @@ app.post('/places', (req,res) => {
       title,address,photos:addedPhotos,description,
       facility,extraInfo,checkIn,checkOut,maxGuests,category,
     });
-    res.json(placeDoc);
+    res.json(placeDoc); //sends the place’s data (placeDoc) as a JSON response to the client.
   });
 });
 
 app.get('/user-places',(req,res) => {
   const {token} = req.cookies;
   jwt.verify(token, jwtSecret, {},async (err, userData) => {
-    const userId = userData._id;  // Correct field is _id
+    const userId = userData._id;  
     res.json(await Place.find({ owner: userId }));
   })
 });
@@ -337,11 +338,9 @@ app.post('/account/bookings', async (req, res) => {
 });
 
 
-
-
 app.get('/bookings', async (req, res) => {
   const userData = await getUserDataFromReq(req);
-  console.log("hello",userData)
+  // console.log("hello",userData)
   const bookings = await Booking.find({ user: userData._id }).populate('place');
   console.log(bookings); // Log the data being sent
   res.json(bookings);

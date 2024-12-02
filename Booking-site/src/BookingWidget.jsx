@@ -31,6 +31,14 @@ export default function BookingWidget({place}){
     if (checkIn && checkOut) {
         numberOfNights = differenceInCalendarDays(new Date(checkOut), new Date(checkIn));
     }
+    function handleGuestChange(ev) {
+        const value = parseInt(ev.target.value, 10);
+        if (value <= place.maxGuests && value > 0) {
+            setNumberOfGuests(value);
+        } else {
+            alert(`The maximum number of guests allowed is ${place.maxGuests}`);
+        }
+    }
 
     async function bookThisPlace() {
         const response = await axios.post('http://localhost:4000/account/bookings', {
@@ -78,7 +86,9 @@ export default function BookingWidget({place}){
                     type="number"
                     className="border rounded-lg p-2 w-full"
                     value={numberofGuests}
-                    onChange={ev => setNumberOfGuests(ev.target.value)}
+                    // onChange={ev => setNumberOfGuests(ev.target.value)}
+                    onChange={handleGuestChange}
+                        max={place.maxGuests}
                     />
                 </div>
             </div>

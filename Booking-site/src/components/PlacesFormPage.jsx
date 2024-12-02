@@ -106,22 +106,19 @@ export default function PlacesFormPage(){
                 {preInput('Address','Address to your place')}
                 <input className="outline-none bg-slate-100 w-full p-2 rounded-lg" type="text" value={address} onChange={ev => setAddress(ev.target.value)} placeholder="address"/>
                 
-                {/*  */}
                 {preInput('Category', 'Select the category of your place')}
                 <select
                 className="outline-none bg-slate-100 w-full p-2 rounded-lg"
                 value={category}
                 onChange={(ev) => setCategory(ev.target.value)}>
                     <option value="" disabled>Select a category</option>
-                    <option value="hotel">Hotel</option>
+                    {/* <option value="hotel">Hotel</option> */}
                     <option value="castle">Castle</option>
                     <option value="pool">Pool</option>
                     <option value="shikara">Shikara</option>
                     {/* <option value="apartment">Apartment</option> */}
                     <option value="villa">Villa</option>
                 </select>
-
-{/*  */}
 
                 {preInput('Photos','more for better experience')}
                 <PhotosUploader addedPhotos={addedPhotos} onChange={setAddedPhotos}/>

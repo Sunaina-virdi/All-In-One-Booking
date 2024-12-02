@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams,useNavigate } from "react-router-dom";
 import axios from "axios";
 import BookingWidget from "../BookingWidget";
 import PlaceGallery from "../PlaceGallery";
@@ -7,6 +7,7 @@ import PlaceGallery from "../PlaceGallery";
 export default function HomePlacePage(){
     const {id} = useParams();
     const [place,setPlace] = useState(null);
+    const navigate = useNavigate();
     
 
     useEffect(() => {
@@ -24,6 +25,11 @@ export default function HomePlacePage(){
 
     return (
         <div className=" mt-8 bg-gray-100 px-10 -mx-8 pt-8">
+            <button onClick={() => navigate(-1)} className="flex gap-2 p-2 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+                </svg>
+            Back</button>
             <div className="max-w-[1140px] mx-auto ">
                 <h1 className="text-3xl">{place.title}</h1>
                 <a className="flex gap-1 my-3 font-semibold underline" target="_blank" 

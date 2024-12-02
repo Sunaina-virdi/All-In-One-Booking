@@ -27,8 +27,7 @@ export default function BookingPage(){
                         <Link 
                             to={`/account/bookings/${booking._id}`} 
                             className="flex gap-4 mb-4 bg-gray-200 rounded-2xl overflow-hidden"
-                            key={booking._id}
-                        >
+                            key={booking._id}>
                             <div className="w-48 h-40">
                                 <PlaceImg place={booking.place} />
                             </div>
