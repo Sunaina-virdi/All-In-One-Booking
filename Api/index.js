@@ -74,26 +74,25 @@ app.post('/register', async (req, res) => {
 
 
 // Search API
-// app.get('/search', async (req, res) => {
-//   const { query } = req.query;
+app.get('/search' , async (req, res) => {
+  try {
+      const query = req.query.query;
+      if (!query) {
+          return res.status(400).json({ message: "Query is required" });
+      }
 
-//   try {
-//     // Use a regular expression to perform a case-insensitive search
-//     const places = await Place.find({
-//       $or: [
-//         { title: { $regex: query, $options: 'i' } }, // Search in title
-//         { address: { $regex: query, $options: 'i' } }, // Search in address
-//         { facility: { $regex: query, $options: 'i' } } // Search in facilities array
-//       ]
-//     });
+      const places = await Place.find({
+          $or: [
+              { category: { $regex: query, $options: "i" } },
+              { address: { $regex: query, $options: "i" } },
+          ],
+      }).select("_id title address category"); // Select only necessary fields
 
-//     res.json(places);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: 'Error fetching search results.' });
-//   }
-// });
-
+      res.json({places});
+  } catch (error) {
+      res.status(500).json({ message: "Error fetching users", error});
+    }
+});
 
 
 app.post('/login', async (req, res) => {
@@ -250,6 +249,7 @@ app.post('/places', (req,res) => {
   });
 });
 
+// Get user-specific places
 app.get('/user-places',(req,res) => {
   const {token} = req.cookies;
   jwt.verify(token, jwtSecret, {},async (err, userData) => {
@@ -258,10 +258,36 @@ app.get('/user-places',(req,res) => {
   })
 });
 
+// Get a specific place by ID
 app.get('/places/:id',async(req,res) => {
   const {id} = req.params;
   res.json(await Place.findById(id));
 })
+
+// posting a review
+app.post('/places/:id/reviews', async (req, res) => {
+  const { id } = req.params;
+  console.log('Review API Request Body:', req.body); 
+  const { userId, username, comment, rating } = req.body;
+
+  try {
+      const place = await Place.findById(id);
+      console.log('Review Data:', { userId, username, comment, rating });
+      if (!place) {
+          return res.status(404).json({ message: 'Place not found' });
+      }
+
+      const newReview = { userId, username:username || "anonymous", comment, rating };
+      place.reviews.push(newReview);
+      await place.save();
+
+      res.status(201).json({ message: 'Review added successfully', reviews: place.reviews });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Failed to add review' });
+  }
+});
+
 
 // update places
 app.put('/places', async (req, res) => {
@@ -301,6 +327,7 @@ app.put('/places', async (req, res) => {
   });
 });
 
+// Get all places
 app.get('/places',async(req,res) => {
   res.json(await Place.find());
 });
@@ -345,6 +372,7 @@ app.get('/bookings', async (req, res) => {
   console.log(bookings); // Log the data being sent
   res.json(bookings);
 });
+
 
 
 app.listen(4000 ,() => {

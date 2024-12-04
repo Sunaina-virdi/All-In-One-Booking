@@ -49,6 +49,7 @@ export default function BookingPage(){
                                     </svg>
                                     Total price: Rs {booking.price} /-
                                 </div>
+                                {/* {booking.agent && <p>Booked by Agent: {booking.agent.name}</p>} */}
                             </div>
                         </Link>
                     ))
