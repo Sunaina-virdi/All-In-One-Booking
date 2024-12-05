@@ -15,6 +15,22 @@ export default function PlacesPage(){
             setPlaces(data);
         })
     },[]);
+    function handleDelete(id) {
+        if (window.confirm('Are you sure you want to delete this place?')) {
+          axios  
+            .delete(`/places/${id}`)
+            .then(() => {
+              // Update the state after deletion
+              setPlaces((prevPlaces) => prevPlaces.filter((place) => place._id !== id));
+              alert('Place deleted successfully!');
+            })
+            .catch((error) => {
+              console.error('Error deleting place:', error);
+              alert('Failed to delete the place.');
+            });
+        }
+      }
+      
     return (
         <div> 
         <AccountNav role={user?.role}/>
@@ -37,6 +53,11 @@ export default function PlacesPage(){
                             <p className="text-sm mt-2">{place.description}</p>
                             <span className="text-sm text-gray-600">Category: {place.category}</span>
                         </div>
+                        <button
+                            onClick={() => handleDelete(place._id)}
+                            className="text-red-500 bg-red-100 px-4 py-2 rounded-lg hover:bg-red-200">
+                            Delete
+                        </button>
                     </Link>
                 ))}
             </div>

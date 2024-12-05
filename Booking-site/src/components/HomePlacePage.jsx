@@ -24,6 +24,7 @@ export default function HomePlacePage() {
         setPlace((prev) => ({ ...prev, reviews: updatedReviews }));
     };
 
+
     if (!place) return '';
 
     return (
@@ -67,6 +68,7 @@ export default function HomePlacePage() {
                 </div>
                 <ReviewsSection reviews={place.reviews || []} />
                 <ReviewForm placeId={id} onAddReview={handleAddReview} />
+
             </div>
         </div>
     );

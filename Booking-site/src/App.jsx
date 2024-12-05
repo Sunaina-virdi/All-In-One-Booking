@@ -25,17 +25,16 @@ function App() {
     <UserContextProvider>
       <Routes>
         <Route path="/" element={<Layout />}>
-            {/* <Route path="/search" element={<SearchBar />} /> */}
             <Route index element={<Homepage/>}/>
             <Route path="/login" element = {<Loginpage/>}/>
             <Route path="/register" element = {<Registerpage/>}/>
+            {/* <Route path="/admin/dashboard" element={<AdminDashboard />} /> */}
             <Route path="/account/" element={<ProfilePage/>}/>
             <Route path="/account/profile/edit" element={<EditProfilePage />} />
             <Route path="/account/places" element={<PlacesPage/>}/>
             <Route path="/account/places/new" element={<PlacesFormPage/>}/>
             <Route path="/account/places/:id" element={<PlacesFormPage/>}/>
             <Route path="/place/:id" element={<HomePlacePage/>}/>
-          
             <Route path="/account/bookings" element={<BookingPage />} />
             <Route path="/account/bookings/:id" element={<BookingPlace/>}/>
         </Route>

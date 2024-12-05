@@ -175,6 +175,28 @@ app.post('/logout', (req,res) => {
 });
 
 
+// admin page
+// app.get('/admin/places', async (req, res) => {
+//   try {
+//     const places = await Place.find(); // Retrieve all places
+//     res.status(200).json(places);
+//   } catch (error) {
+//     console.error('Error fetching places:', error);
+//     res.status(500).json({ message: 'Failed to fetch places' });
+//   }
+// });
+// app.get('/admin/users', async (req, res) => {
+//   try {
+//     const users = await User.find(); // Retrieve all users
+//     res.status(200).json(users);
+//   } catch (error) {
+//     console.error('Error fetching users:', error);
+//     res.status(500).json({ message: 'Failed to fetch users' });
+//   }
+// });
+
+
+
 // const upload = multer({dest:'uploads/'});
 // app.post('/upload-photo', upload.single("photo"), async (req, res) => {
 //   const { token } = req.cookies; // Use the token to get the user ID
@@ -326,6 +348,19 @@ app.put('/places', async (req, res) => {
     }
   });
 });
+
+// delete places
+app.delete('/places/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    await Place.findByIdAndDelete(id);
+    res.status(200).json({ message: 'Place deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting place:', error);
+    res.status(500).json({ message: 'Failed to delete place' });
+  }
+});
+
 
 // Get all places
 app.get('/places',async(req,res) => {
