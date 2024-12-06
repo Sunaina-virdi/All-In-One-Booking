@@ -176,24 +176,50 @@ app.post('/logout', (req,res) => {
 
 
 // admin page
-// app.get('/admin/places', async (req, res) => {
-//   try {
-//     const places = await Place.find(); // Retrieve all places
-//     res.status(200).json(places);
-//   } catch (error) {
-//     console.error('Error fetching places:', error);
-//     res.status(500).json({ message: 'Failed to fetch places' });
-//   }
-// });
-// app.get('/admin/users', async (req, res) => {
-//   try {
-//     const users = await User.find(); // Retrieve all users
-//     res.status(200).json(users);
-//   } catch (error) {
-//     console.error('Error fetching users:', error);
-//     res.status(500).json({ message: 'Failed to fetch users' });
-//   }
-// });
+
+app.get('/admin/places', async (req, res) => {
+  try {
+    const places = await Place.find(); // Retrieve all places
+    res.status(200).json(places);
+  } catch (error) {
+    console.error('Error fetching places:', error);
+    res.status(500).json({ message: 'Failed to fetch places' });
+  }
+});
+app.get('/admin/users', async (req, res) => {
+  try {
+    const users = await User.find(); // Retrieve all users
+    res.status(200).json(users);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).json({ message: 'Failed to fetch users' });
+  }
+});
+app.get("/admin/bookings/count", async (req, res) => {
+  try {
+    const totalBookings = await Booking.countDocuments(); // Assuming 'Booking' is your model
+    res.json({ totalBookings });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch bookings count" });
+  }
+});
+
+// delete user
+app.delete('/users/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Delete the user
+    await User.findByIdAndDelete(id);
+
+    // Optionally, you can add logic to clean up user-related data if needed
+    res.status(200).json({ message: 'User deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).json({ message: 'Failed to delete user' });
+  }
+});
+
 
 
 

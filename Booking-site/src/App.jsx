@@ -3,6 +3,7 @@ import {Route,Routes} from "react-router-dom";
 import Homepage from "./components/homepage.jsx";
 import Loginpage from './components/loginpage.jsx';
 import Registerpage from './components/registerpage.jsx';
+import AdminDashboard from './components/AdminDashboard.jsx';
 import Layout from './Layout';
 // import SearchBar from './Searchbar';
 import { UserContextProvider } from './UserContext.jsx';
@@ -28,7 +29,7 @@ function App() {
             <Route index element={<Homepage/>}/>
             <Route path="/login" element = {<Loginpage/>}/>
             <Route path="/register" element = {<Registerpage/>}/>
-            {/* <Route path="/admin/dashboard" element={<AdminDashboard />} /> */}
+            <Route path="/account/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/account/" element={<ProfilePage/>}/>
             <Route path="/account/profile/edit" element={<EditProfilePage />} />
             <Route path="/account/places" element={<PlacesPage/>}/>

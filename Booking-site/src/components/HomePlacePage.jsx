@@ -56,7 +56,7 @@ export default function HomePlacePage() {
                          <span className="text-lg font-bold">Category: {place.category}</span><br/>
                          Check-in: {place.checkIn} <br/>
                          Check-out: {place.checkOut} <br/>
-//                         Max number of guests : {place.maxGuests}
+                         Max number of guests : {place.maxGuests}
                     </div>
                     <div>
                         <BookingWidget place={place} />
