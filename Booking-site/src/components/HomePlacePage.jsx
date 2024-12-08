@@ -4,7 +4,6 @@ import axios from "axios";
 import BookingWidget from "../BookingWidget";
 import PlaceGallery from "../PlaceGallery";
 import ReviewsSection from "./ReviewsSection";
-import ReviewForm from "./ReviewForm";
 
 export default function HomePlacePage() {
     const { id } = useParams();
@@ -19,10 +18,6 @@ export default function HomePlacePage() {
             setPlace(response.data);
         });
     }, [id]);
-
-    const handleAddReview = (updatedReviews) => {
-        setPlace((prev) => ({ ...prev, reviews: updatedReviews }));
-    };
 
 
     if (!place) return '';
@@ -67,8 +62,6 @@ export default function HomePlacePage() {
                     <p className="text-gray-700">{place.extraInfo}</p>
                 </div>
                 <ReviewsSection reviews={place.reviews || []} />
-                {/* <ReviewForm placeId={id} onAddReview={handleAddReview} /> */}
-
             </div>
         </div>
     );
