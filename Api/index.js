@@ -11,6 +11,9 @@ const imageDownloader = require('image-downloader');
 const multer = require('multer');
 const fs = require('fs');
 
+const sendEmail = require('./emailService');  // Adjust the path if necessary
+
+
 require('dotenv').config();
 const app = express();
 
@@ -237,7 +240,7 @@ app.delete('/users/:id', async (req, res) => {
 //     return res.status(400).json({ error: "No file uploaded" });
 //   }
 
-//   const photoUrl = `/uploads/${req.file.filename}`;
+//   const photoUrl = /uploads/${req.file.filename};
   
 //   // Update the user's photo in the database
 //   try {
@@ -400,7 +403,7 @@ app.post('/account/bookings', async (req, res) => {
   const mytoken=req.cookies.token
   console.log("token",mytoken)
 
-  // Assume `req.user` contains the user ID (typically from authentication middleware)
+  // Assume req.user contains the user ID (typically from authentication middleware)
   const user = await jwt.verify(mytoken,jwtSecret)
   
   if (!user) {
@@ -427,15 +430,38 @@ app.post('/account/bookings', async (req, res) => {
 
 
 app.get('/bookings', async (req, res) => {
-  const userData = await getUserDataFromReq(req);
-  // console.log("hello",userData)
-  const bookings = await Booking.find({ user: userData._id }).populate('place');
-  console.log(bookings); // Log the data being sent
-  res.json(bookings);
+  try {
+    const userData = await getUserDataFromReq(req);
+
+    // Fetch bookings with populated 'place' and 'user' details
+    const bookings = await Booking.find({ user: userData._id })
+      .populate('place') // Populate 'place' details
+      .populate('user', 'email name'); // Populate 'user' details with only 'email' and 'name'
+
+    console.log(bookings); // Log the data being sent
+    res.json(bookings);
+  } catch (error) {
+    console.error('Error fetching bookings:', error);
+    res.status(500).json({ error: 'Failed to fetch bookings' });
+  }
 });
 
 
+
+// Route to send an email
+app.post("/send-email", async (req, res) => {
+  const { to, subject, text, html } = req.body;
+
+  try {
+    // Call sendEmail function with the email details
+    await sendEmail(to, subject, text, html);
+    res.status(200).send("Email sent successfully!");
+  } catch (error) {
+    res.status(500).send("Failed to send email");
+  }
+});
 
 app.listen(4000 ,() => {
     console.log("http://localhost:4000");
 });
+

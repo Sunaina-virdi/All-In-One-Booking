@@ -67,7 +67,7 @@ export default function HomePlacePage() {
                     <p className="text-gray-700">{place.extraInfo}</p>
                 </div>
                 <ReviewsSection reviews={place.reviews || []} />
-                <ReviewForm placeId={id} onAddReview={handleAddReview} />
+                {/* <ReviewForm placeId={id} onAddReview={handleAddReview} /> */}
 
             </div>
         </div>

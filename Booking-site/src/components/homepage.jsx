@@ -26,38 +26,21 @@ export default function Homepage() {
 
   return (
     <>
-      <div className="flex flex-row gap-3 mt-16 justify-center">
-        <button 
-          className={`border shadow-md py-2 px-4 rounded-lg ${selectedCategory === "" ? "bg-primary text-white" : "bg-gray-200"}`} 
-          onClick={() => filterByCategory("")}>
-          All
-        </button>
-        <button 
-          className={`border shadow-md py-2 px-4 rounded-lg ${selectedCategory === "pool" ? "bg-primary text-white" : "bg-gray-200"}`} 
-          onClick={() => filterByCategory("pool")}>
-          Pool
-        </button>
-        {/* <button 
-          className={`border shadow-md py-2 px-4 rounded-lg ${selectedCategory === "hotel" ? "bg-primary text-white" : "bg-gray-200"}`} 
-          onClick={() => filterByCategory("hotel")}>
-          Hotel
-        </button> */}
-        <button 
-          className={`border shadow-md py-2 px-4 rounded-lg ${selectedCategory === "castle" ? "bg-primary text-white" : "bg-gray-200"}`} 
-          onClick={() => filterByCategory("castle")}>
-          Castle
-        </button>
-        <button 
-          className={`border shadow-md py-2 px-4 rounded-lg ${selectedCategory === "shikara" ? "bg-primary text-white" : "bg-gray-200"}`} 
-          onClick={() => filterByCategory("shikara")}>
-          Shikara
-        </button>
-        <button 
-          className={`border shadow-md py-2 px-4 rounded-lg ${selectedCategory === "villa" ? "bg-primary text-white" : "bg-gray-200"}`} 
-          onClick={() => filterByCategory("villa")}>
-          Villa
-        </button>
-      </div>
+      <div className="flex justify-center gap-4 my-8">
+         {["", "pool", "castle", "shikara", "villa"].map((category) => (
+           <button
+             key={category}
+             className={`px-6 py-2 rounded-full shadow-lg transition-all ${
+               selectedCategory === category
+                 ? "bg-primary text-white"
+                 : "bg-gray-200 text-gray-800 hover:bg-blue-400 hover:text-white"
+             }`}
+             onClick={() => filterByCategory(category)}
+           >
+             {category === "" ? "All" : category.charAt(0).toUpperCase() + category.slice(1)}
+           </button>
+         ))}
+       </div>
 
       <div className="mt-8 grid gap-10 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {filteredPlaces.length > 0 ? (
@@ -81,7 +64,7 @@ export default function Homepage() {
           ))
         ) : (
           <p className="text-center col-span-full">No places found for the selected category.</p>
-        )}
+        )}   
       </div>
       <footer className="bg-blue-800 text-white py-4 mt-12">
           <div className="text-center">

@@ -139,7 +139,7 @@ export default function AdminDashboard() {
                       <td className="border border-gray-300 p-2">{user.email}</td>
                       <td className="border border-gray-300 p-2">{user.role}</td>
                       <td className="border border-gray-300 p-2 text-center">
-                        <button className="text-red-500"
+                        <button className=" p-2 rounded-lg bg-red-400 text-black"
                           onClick={() => handleDelete(user._id, "user")}>
                           Delete
                         </button>
@@ -162,7 +162,7 @@ export default function AdminDashboard() {
                     <th className="border border-gray-300 p-2">Location</th>
                     <th className="border border-gray-300 p-2">Actions</th>
                   </tr>
-                </thead>
+                </thead> 
                 <tbody>
                   {places.map((place) => (
                     <tr key={place._id} className="hover:bg-gray-50">
@@ -170,7 +170,7 @@ export default function AdminDashboard() {
                       <td className="border border-gray-300 p-2">{place.category}</td>
                       <td className="border border-gray-300 p-2">{place.address}</td>
                       <td className="border border-gray-300 p-2 text-center">
-                        <button className="text-red-500"
+                        <button className=" p-2 rounded-lg bg-red-400 text-black "
                           onClick={() => handleDelete(place._id, "place")}>
                           Delete
                         </button>

@@ -27,24 +27,49 @@ export default function Loginpage(){
         return<Navigate to={'/'} />
     }
     return (
-        <div className="mt-4 grow flex items-center justify-around">
-            <div className="mb-64">
-                <h1 className="text-4xl text-center mb-4 font-semibold">Login</h1>
-                <form className="max-w-md mx-auto" onSubmit={handleLoginSubmit}>
-                    <input type="email" placeholder="your@email.com" 
-                        value={email} 
-                        onChange={ev => setEmail(ev.target.value)}/>
-                    <input type="password" placeholder="password" 
-                        value={password} 
-                        on onChange={ev => setPassword(ev.target.value)}/>
-                    <button className="primary">Login</button>
-                    <div className="text-center py-2 text-gray-500">
-                        Don't have an account yet?
-                        <Link className="underline text-black" to={'/register'}> Register now</Link>
-                    </div>
-                </form>
+    <div className="flex items-center justify-center min-h-screen ">
+        <div className="w-full max-w-md p-6 bg-gradient-to-br from-blue-100 to-blue-300 shadow-xl rounded-lg">
+        <h1 className="text-3xl font-bold text-center text-blue-800 mb-6">
+            Welcome Back
+        </h1>
+        <form className="space-y-4" onSubmit={handleLoginSubmit}>
+            <div className="space-y-2">
+            <label className="block text-sm font-semibold text-gray-600">
+                Email
+            </label>
+            <input
+                type="email"
+                placeholder="your@email.com"
+                value={email}
+                onChange={(ev) => setEmail(ev.target.value)}
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
             </div>
-            
+            <div className="space-y-2">
+            <label className="block text-sm font-semibold text-gray-600">
+                Password
+            </label>
+            <input
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(ev) => setPassword(ev.target.value)}
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+            <button
+            type="submit"
+            className="w-full py-2 px-4 bg-blue-800 text-white font-semibold rounded-lg hover:bg-blue-700 transition" >
+            Login
+            </button>
+        </form>
+        <div className="text-center mt-4 text-gray-600">
+            Don’t have an account?{" "}
+            <Link
+            className="text-blue-600 hover:underline font-medium"
+            to={"/register"}>
+            Register now
+            </Link>
         </div>
+        </div>
+    </div>
     );
 }
