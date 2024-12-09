@@ -53,7 +53,7 @@ export default function BookingPage(){
                     ))
                 ) : (
                     <div className="flex items-center justify-center">
-                        <div className="text-center mt-16 border p-5 shadow-md shadow-gary-500">
+                        <div className="text-center mt-16 border p-5 shadow-gary-500 bg-gradient-to-br from-blue-100 to-blue-300 shadow-xl rounded-lg">
                             <h2 className="text-2xl font-semibold">No trips booked... yet!</h2>
                             <p className="text-gray-500 mt-2">Time to dust off your bags and start planning your next adventure</p>
                             <Link to="/" className="inline-block mt-4 px-6 py-2 text-white bg-primary rounded-full">

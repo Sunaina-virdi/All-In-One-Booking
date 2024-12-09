@@ -42,17 +42,6 @@ export default function EditProfilePage() {
             onChange={(e) => setEmail(e.target.value)}
             className="w-full border p-2 rounded-2xl" />
         </label>
-        {/* <label>
-          Profile Picture:
-          <div className="flex items-center gap-4">
-            <img
-              src={photo || "/api/placeholder/150/150"}
-              alt="Profile"
-              className="w-16 h-16 rounded-full object-cover"
-            />
-            <input type="file" accept="image/*" onChange={handleFileUpload} />
-          </div>
-        </label> */}
         <button
           onClick={handleSave}
           className="bg-primary text-white py-2 px-4 rounded hover:bg-blue-700">
