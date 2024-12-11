@@ -226,33 +226,6 @@ app.delete('/users/:id', async (req, res) => {
 
 
 
-// const upload = multer({dest:'uploads/'});
-// app.post('/upload-photo', upload.single("photo"), async (req, res) => {
-//   const { token } = req.cookies; // Use the token to get the user ID
-//   if (!token) {
-//     return res.status(401).json({ error: "No token provided" });
-//   }
-
-//   const userData = jwt.verify(token, jwtSecret);
-//   const userId = userData._id;
-
-//   if (!req.file) {
-//     return res.status(400).json({ error: "No file uploaded" });
-//   }
-
-//   const photoUrl = /uploads/${req.file.filename};
-  
-//   // Update the user's photo in the database
-//   try {
-//     await User.findByIdAndUpdate(userId, { photo: photoUrl });
-//     res.json({ photoUrl });
-//   } catch (err) {
-//     res.status(500).json({ error: "Error updating photo" });
-//   }
-// });
-
-
-
 // console.log({__dirname});
 app.post('/upload-by-link',async(req,res) => {
   const {link} = req.body;

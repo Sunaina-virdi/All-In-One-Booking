@@ -95,6 +95,7 @@ export default function RegisterPage() {
         password,
         role,
       });
+      
       alert("Registration successful. Now you can log in.");
       navigate("/login");
     } catch (e) {
