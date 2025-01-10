@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { UserContext } from "./UserContext";
 import axios from 'axios';
+import bg from '../src/assets/bg.jpg'
 
 export default function Header() {
   const { user } = useContext(UserContext);
@@ -25,15 +26,20 @@ export default function Header() {
   };
 
   return (
+    <div className="p-4 bg-bg1">
+    {/* <section
+         className="relative bg-cover bg-center h-screen"
+         style={{ backgroundImage: `url(${bg})` }}>
+    <div className="absolute inset-0 bg-black bg-opacity-35"></div> */}
     <header className='flex justify-between'>
       <Link to={'/'} className='flex items-center gap-1'>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-8 h-8 -rotate-90 text-blue-800">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-8 h-8 -rotate-90 text-lighter">
           <path strokeLinecap="round" strokeLinejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
         </svg>
-        <span className='font-bold text-2xl text-blue-800'>Allin1</span>
+        <span className='font-bold text-2xl text-lighter'>Allin1</span>
       </Link>
 
-      <form onSubmit={handleSearch} className="flex gap-2 border border-gray-300 rounded-full py-2 px-4 shadow-md shadow-blue-800">
+      <form onSubmit={handleSearch} className="flex gap-2 border border-gray-300 rounded-full py-2 px-4 shadow-md shadow-white text-white">
         <input
           type="text"
           placeholder="Search anywhere"
@@ -41,11 +47,11 @@ export default function Header() {
           onChange={handleSearch} // Update search input state and fetch data
           className="bg-transparent outline-none flex-grow"
         />
-        <button type="submit" className="bg-blue-800 text-white p-1 rounded-full">
+        <button type="submit" className="bg-white text-lighter p-1 rounded-full">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
-            viewBox="0 0 24 24"
+            viewBox="0 0 24 24" 
             strokeWidth="1.5"
             stroke="currentColor"
             className="w-4 h-4">
@@ -59,7 +65,7 @@ export default function Header() {
 
       {/* Display Search Results */}
       {searchResults.length > 0 && (
-        <div className="absolute bg-white shadow-md w-full mt-20 rounded-lg">
+        <div className="absolute bg-light shadow-md w-full mt-20 rounded-lg ">
           {searchResults.map((place) => (
             <div key={place._id} className="p-2 hover:bg-gray-200">
               <Link to={`/place/${place._id}`} onClick={() => {
@@ -71,8 +77,8 @@ export default function Header() {
         </div>
       )}
 
-      <Link to={'/account'} className='flex items-center gap-2 text-blue-800 font-semibold border border-gray-300 rounded-full py-2 px-4 shadow-md shadow-blue-800'>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+      <Link to={'/account'} className='flex items-center gap-2 font-semibold border border-gray-300 rounded-full py-2 px-4 shadow-md shadow-shadow'>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 text-white">
           <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
         </svg>
         <div className='bg-gray-500 text-white rounded-full border border-gray-500 overflow-hidden'>
@@ -81,11 +87,16 @@ export default function Header() {
           </svg>
         </div>
         {!!user && (
-          <div>
+          <div className="text-lighter">
             {user.name}
           </div>
         )}
       </Link>
     </header>
+    
+    {/* </section> */}
+    </div>
   );
 }
+
+

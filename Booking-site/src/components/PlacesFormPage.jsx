@@ -51,7 +51,7 @@ export default function PlacesFormPage(){
 
     function inputDescription(text){
         return (
-            <p className="text-gray-500 text-sm mb-2">{text}</p>
+            <p className="text-white text-sm mb-2">{text}</p>
         );
     }
 
@@ -96,9 +96,9 @@ export default function PlacesFormPage(){
     }
 
     return(
-        <div className=" w-full mx-auto mt-8">
+        <div className="w-full mx-auto bg-bg1">
             <AccountNav role={user?.role}/>
-            <form onSubmit={savePlace} className="max-width lg:w-[1090px] md:w-[600px] mx-auto" >
+            <form onSubmit={savePlace} className="max-width lg:w-[1090px] md:w-[600px] mx-auto bg-bg3 rounded-2xl p-8" >
 
                 {preInput('Title','Title for your place. Should be short and catchy as in advertisement')}
                 <input className="outline-none bg-slate-100 w-full p-2 rounded-lg" type="text" value={title} onChange={ev => setTitle(ev.target.value)} placeholder="title, for example: My lovely apt"/>
@@ -159,7 +159,7 @@ export default function PlacesFormPage(){
                         type="text" value={price} onChange={ev => setPrice(ev.target.value)}/>
                     </div>
                 </div>
-                <button className="primary mt-4">Save</button>
+                <button className="mt-8 p-2 w-full text-white rounded-2xl bg-bg1">Save</button>
             </form>
         </div>
     )

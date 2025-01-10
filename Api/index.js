@@ -10,13 +10,10 @@ const cookieParser = require("cookie-parser");
 const imageDownloader = require('image-downloader');
 const multer = require('multer');
 const fs = require('fs');
-
 const sendEmail = require('./emailService');  // Adjust the path if necessary
-
 
 require('dotenv').config();
 const app = express();
-
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = 'asdfghjkl';
 
@@ -25,8 +22,6 @@ const jwtSecret = 'asdfghjkl';
 app.use(express.json()); 
 app.use(cookieParser());
 app.use('/uploads',express.static(__dirname+'/uploads'));
-
-
 
 app.use(cors({
     credentials:true,

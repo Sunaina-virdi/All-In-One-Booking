@@ -25,15 +25,15 @@ export default function Homepage() {
   }
 
   return (
-    <>
+    <div className="p-8 bg-bg1">
       <div className="flex justify-center gap-4 my-8">
          {["", "pool", "castle", "shikara", "villa"].map((category) => (
            <button
              key={category}
              className={`px-6 py-2 rounded-full shadow-lg transition-all ${
                selectedCategory === category
-                 ? "bg-primary text-white"
-                 : "bg-gray-200 text-gray-800 hover:bg-blue-400 hover:text-white"
+                 ? "bg-bg3 text-white"
+                 : "bg-gray-200 text-gray-800 hover:bg-bg2 hover:text-white"
              }`}
              onClick={() => filterByCategory(category)}
            >
@@ -55,10 +55,10 @@ export default function Homepage() {
                   />
                 )}
               </div>
-              <h2 className="font-bold">{place.address}</h2>
-              <h3 className="text-sm text-gray-500 truncate">{place.title}</h3>
+              <h2 className="font-bold text-white">{place.address}</h2>
+              <h3 className="text-sm text-purple-100 truncate">{place.title}</h3>
               <div className="mt-1">
-                <span className="font-bold">Rs {place.price} per night</span>
+                <span className="font-bold text-gray-300">Rs {place.price} per night</span>
               </div>
             </Link>
           ))
@@ -66,12 +66,12 @@ export default function Homepage() {
           <p className="text-center col-span-full">No places found for the selected category.</p>
         )}   
       </div>
-      <footer className="bg-blue-800 text-white py-4 mt-12">
+      <footer className="bg-bg2 text-white py-4 mt-12">
           <div className="text-center">
               <p className="text-sm">© {new Date().getFullYear()} Allin1. All rights reserved.</p>
               <p className="text-xs">Designed and developed with ❤️</p>
           </div>
       </footer>
-    </>
+    </div>
   );
 }

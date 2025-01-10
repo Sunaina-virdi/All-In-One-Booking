@@ -49,7 +49,7 @@ export default function PhotosUploader({addedPhotos,onChange}) {
           className="outline-none bg-slate-100 w-full p-2 rounded-lg" type="text"
           placeholder={"Add using a link.....jpg"}/>
         <button onClick={addPhotoByLink}
-          className="bg-blue-800 px-4 py-2 text-white rounded-xl">
+          className="bg-bg1 px-4 py-2 text-white rounded-xl">
           Add&nbsp;photo
         </button>
       </div>

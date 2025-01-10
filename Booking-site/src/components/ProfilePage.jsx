@@ -47,10 +47,10 @@ export default function ProfilePage() {
   }
 
   return (
-    <div>
+    <div className="bg-bg1 h-screen">
       <AccountNav role={user?.role} />
       {subpage === "profile" && (
-        <div className="text-center max-w-lg mx-auto mt-6 rounded-2xl shadow-md shadow-blue-800 p-5">
+        <div className="text-center max-w-lg mx-auto mt-24 rounded-2xl shadow-lg bg-bg2 shadow-shadow p-5">
           {/* Profile Picture
           <div className="flex flex-row justify-between items-center gap-4">
             <div
@@ -80,7 +80,7 @@ export default function ProfilePage() {
           </div> */}
 
           {/* User Details */}
-          <div className="text-left mt-4">
+          <div className="text-left mt-4 text-white">
             <p className="text-lg font-semibold">
               <span className="mr-2">📝 Name:</span> {user?.name}
             </p>
@@ -96,14 +96,12 @@ export default function ProfilePage() {
           <div className="mt-6 flex gap-4 justify-center">
             <button
               onClick={logout}
-              className="bg-red-500 text-white py-2 px-4 rounded-full hover:bg-red-700"
-            >
+              className="bg-red-800 text-white py-2 px-4 rounded-full hover:bg-red-700">
               Logout
             </button>
             <Link
               to="/account/profile/edit"
-              className="bg-primary text-white py-2 px-4 rounded-full hover:bg-blue-700"
-            >
+              className="bg-gray-200 text-bg2 py-2 px-4 rounded-full">
               Edit Profile
             </Link>
           </div>
